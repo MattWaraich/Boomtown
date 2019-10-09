@@ -9,8 +9,8 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: "", // @TODO: Authentication - Server
-        values: [fullname, email, password],
+        text: "INSERT INTO users", // @TODO: Authentication - Server
+        values: [fullname, email, password]
       };
       try {
         const user = await postgres.query(newUserInsert);
@@ -28,8 +28,8 @@ module.exports = postgres => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: "", // @TODO: Authentication - Server
-        values: [email],
+        text: "SELECT * FROM users", // @TODO: Authentication - Server
+        values: [email]
       };
       try {
         const user = await postgres.query(findUserQuery);
@@ -40,16 +40,20 @@ module.exports = postgres => {
       }
     },
     async getUserById(id) {
+      const findUserId = {
+        text: "SELECT * FROM users WHERE id=$1", // @TODO: Authentication - Server
+        values: [id]
+      };
+      try {
+        const user = await postgres.query(findUserId);
+        if (!user) throw "User ID was not found.";
+        return user.rows[0];
+      } catch (e) {
+        throw "Please try again."; 
+      }
       /**
        *  @TODO: Handling Server Errors
        *
-       *  Inside of our resource methods we get to determine when and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
        *
        *  This will be the basic logic for this resource method:
        *  1) Query for the user using the given id. If no user is found throw an error.
@@ -61,8 +65,8 @@ module.exports = postgres => {
        */
 
       const findUserQuery = {
-        text: "", // @TODO: Basic queries
-        values: [id],
+        text: "SELECT * FROM users WHERE id = $1",
+        values: [id]
       };
 
       /**
@@ -79,7 +83,10 @@ module.exports = postgres => {
       // -------------------------------
     },
     async getItems(idToOmit) {
+      console.log(idToOmit);
       const items = await postgres.query({
+        //if ID exists change text
+
         /**
          *  @TODO:
          *
@@ -93,7 +100,7 @@ module.exports = postgres => {
          */
 
         text: ``,
-        values: idToOmit ? [idToOmit] : [],
+        values: idToOmit ? [idToOmit] : []
       });
       return items.rows;
     },
@@ -104,7 +111,7 @@ module.exports = postgres => {
          *  Get all Items for user using their id
          */
         text: ``,
-        values: [id],
+        values: [id]
       });
       return items.rows;
     },
@@ -115,18 +122,18 @@ module.exports = postgres => {
          *  Get all Items borrowed by user using their id
          */
         text: ``,
-        values: [id],
+        values: [id]
       });
       return items.rows;
     },
     async getTags() {
-      const tags = await postgres.query(/* @TODO: Basic queries */);
+      const tags = await postgres.query("SELECT * FROM tags");
       return tags.rows;
     },
     async getTagsForItem(id) {
       const tagsQuery = {
         text: ``, // @TODO: Advanced query Hint: use INNER JOIN
-        values: [id],
+        values: [id]
       };
 
       const tags = await postgres.query(tagsQuery);
@@ -207,6 +214,6 @@ module.exports = postgres => {
           }
         });
       });
-    },
+    }
   };
 };

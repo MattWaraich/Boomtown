@@ -34,5 +34,7 @@ const queryResolvers = app => ({
     // @TODO: Replace this mock return statement with the correct tags from Postgres
     return [];
     // -------------------------------
-  },
+  }
 });
+
+module.exports = queryResolvers;

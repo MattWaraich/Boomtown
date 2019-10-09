@@ -1,6 +1,6 @@
 const { ApolloError } = require("apollo-server");
 
-const relationResolvers = {
+module.exports = {
   User: {
     /**
      *  @TODO: Advanced resolvers
@@ -62,5 +62,5 @@ const relationResolvers = {
     //   // -------------------------------
     // }
     // -------------------------------
-  },
+  }
 };
