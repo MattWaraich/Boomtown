@@ -9,7 +9,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: "INSERT INTO users", // @TODO: Authentication - Server
+        text: "INSERT INTO users",
         values: [fullname, email, password]
       };
       try {
@@ -26,22 +26,25 @@ module.exports = postgres => {
         }
       }
     },
+
+    // GET USER AND PASSWORD FOR VERIFICATION
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: "SELECT * FROM users", // @TODO: Authentication - Server
-        values: [email]
+        text: "SELECT * FROM users"
       };
       try {
         const user = await postgres.query(findUserQuery);
         if (!user) throw "User was not found.";
         return user.rows[0];
       } catch (e) {
-        throw "User was not found.";
+        throw "Please try again!";
       }
     },
+
+    //GET USER BY ID but
     async getUserById(id) {
       const findUserId = {
-        text: "SELECT * FROM users WHERE id=$1", // @TODO: Authentication - Server
+        text: "SELECT * FROM users WHERE id=$1",
         values: [id]
       };
       try {
@@ -49,96 +52,83 @@ module.exports = postgres => {
         if (!user) throw "User ID was not found.";
         return user.rows[0];
       } catch (e) {
-        throw "Please try again."; 
+        throw "Please try again.";
       }
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important, don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
+    },
 
-      const findUserQuery = {
-        text: "SELECT * FROM users WHERE id = $1",
+    //GET ITEMS
+    async getItems(idToOmit) {
+      const itemQuery = {
+        text: "SELECT * FROM items WHERE ownerid != $1",
+        values: idToOmit ? [idToOmit] : []
+      };
+      try {
+        const items = await postgres.query(itemQuery);
+        return items.rows;
+      } catch (e) {
+        throw e;
+      }
+    },
+
+    //GET ITEMS FOR USER
+    async getItemsForUser(id) {
+      const queryItems = {
+        text: "SELECT id, fullname, items FROM users WHERE id=$1;",
         values: [id]
       };
-
-      /**
-       *  Refactor the following code using the error handling logic described above.
-       *  When you're done here, ensure all of the resource methods in this file
-       *  include a try catch, and throw appropriate errors.
-       *
-       *  Ex: If the user is not found from the DB throw 'User is not found'
-       *  If the password is incorrect throw 'User or Password incorrect'
-       */
-
-      const user = await postgres.query(findUserQuery);
-      return user;
-      // -------------------------------
+      try {
+        const items = await postgres.query(queryItems);
+        return items.rows;
+      } catch (e) {
+        throw e;
+      }
     },
-    async getItems(idToOmit) {
-      console.log(idToOmit);
-      const items = await postgres.query({
-        //if ID exists change text
 
-        /**
-         *  @TODO:
-         *
-         *  idToOmit = ownerId
-         *
-         *  Get all Items. If the idToOmit parameter has a value,
-         *  the query should only return Items were the ownerid !== idToOmit
-         *
-         *  Hint: You'll need to use a conditional AND/WHERE clause
-         *  to your query text using string interpolation
-         */
-
-        text: ``,
-        values: idToOmit ? [idToOmit] : []
-      });
-      return items.rows;
-    },
-    async getItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items for user using their id
-         */
-        text: ``,
-        values: [id]
-      });
-      return items.rows;
-    },
+    // GET BORROWED ITEMS FOR USER
     async getBorrowedItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items borrowed by user using their id
-         */
-        text: ``,
+      const findBorrowId = {
+        text: "GET * items WHERE borrowid = $1",
         values: [id]
-      });
-      return items.rows;
+      };
+      try {
+        const items = await postgres.query(findBorrowId);
+        return items.rows;
+      } catch (e) {
+        throw "Please try again!";
+      }
     },
-    async getTags() {
-      const tags = await postgres.query("SELECT * FROM tags");
-      return tags.rows;
+
+    //GET TAGS
+    async getTags(id) {
+      const queryTags = {
+        text: "SELECT * FROM tags",
+        values: [itemTags]
+      };
+      try {
+        const items = await postgres.query(queryTags);
+        if (!tags) throw "Tags were not found.";
+        return items.rows;
+      } catch (e) {
+        throw "Please try again!";
+      }
     },
+
+    //GET TAGS FOR ITEMS
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: ``, // @TODO: Advanced query Hint: use INNER JOIN
+        text:
+          "SELECT * FROM itemtags INNER JOIN tags ON itemtags.tagid = tags.tagid WHERE itemid = $1 ",
         values: [id]
       };
-
-      const tags = await postgres.query(tagsQuery);
-      return tags.rows;
+      try {
+        const tags = await postgres.query(tagsQuery);
+        if (!tags) throw "No item tags found.";
+        return tags.rows;
+      } catch (e) {
+        throw "Please try again!";
+      }
     },
+
     async saveNewItem({ item, user }) {
       /**
        *  @TODO: Adding a New Item
