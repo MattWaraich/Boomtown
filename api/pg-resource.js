@@ -117,7 +117,7 @@ module.exports = postgres => {
     async getTagsForItem(id) {
       const tagsQuery = {
         text:
-          "SELECT * FROM itemtags INNER JOIN tags ON itemtags.tagid = tags.tagid WHERE itemid = $1 ",
+          "SELECT A.id, A.title FROM itemtags INNER JOIN tags AS A ON A.id = tagid WHERE itemid = $1;",
         values: [id]
       };
       try {
@@ -131,15 +131,22 @@ module.exports = postgres => {
 
     
     async saveNewItem({ item, user }) {
+
       return new Promise((resolve, reject) => {
+
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
             client.query("BEGIN", async err => {
-              const { newItem, description, tags } = item;
 
-              // Generate new Item query
-              // @TODO
+              const { title, description, tags } = item;
+
+              const newItemQuery = {
+                text: `INSERT INTO items(title, description, ownerid) VALUES (1, 2, 3) RETURNING *;`,
+                values: [title, description, users]
+              };
+
+              
               addItem(item){
                 const newItem,
                 id: boomtown.item.length + 1,
