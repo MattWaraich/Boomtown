@@ -129,16 +129,12 @@ module.exports = postgres => {
       }
     },
 
-    
     async saveNewItem({ item, user }) {
-
       return new Promise((resolve, reject) => {
-
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
             client.query("BEGIN", async err => {
-
               const { title, description, tags } = item;
 
               const newItemQuery = {
@@ -146,34 +142,22 @@ module.exports = postgres => {
                 values: [title, description, users]
               };
 
-              
-              addItem(item){
-                const newItem,
-                id: boomtown.item.length + 1,
-                title: item.title,
-                imageurl: item.imageurl,
-                description: item.description,
-                itemowner: item.itemowner,
-                tags: item.tags,
-                created: item.created,
-                borrower: item.user
-
-              };
-              boomtown.item.push(newItem);
-              return newPerson;
-            },
-
               // Insert new Item
-              // @TODO
-              // -------------------------------
+              const newItem = await postgres.query(newItemQuery);
 
-              // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-              // @TODO
-              // -------------------------------
+              // Generate tag relationships query
+              const itemid = newItem.rows[0].id;
+              const tagRelationQuery = await tagsQueryString(tags, itemid, "");
+              const ArrayTagId = tags.map(tag => {
+                return tag.id;
+              });
+              const newTagQuery = {
+                text: `INSERT INTO itemtags(itemid, tagid) VALUES${tagRelationQuery}`,
+                values: ArrayTagId
+              };
 
               // Insert tags
-              // @TODO
-              // -------------------------------
+              await postgres.query(newTagQuery);
 
               // Commit the entire transaction!
               client.query("COMMIT", err => {
@@ -182,9 +166,7 @@ module.exports = postgres => {
                 }
                 // release the client back to the pool
                 done();
-                // Uncomment this resolve statement when you're ready!
-                // resolve(newItem.rows[0])
-                // -------------------------------
+                resolve(newItem.rows[0]);
               });
             });
           } catch (e) {
@@ -206,23 +188,3 @@ module.exports = postgres => {
     }
   };
 };
-
-
-
-
-
-
-
-
-
-
-/**
-     *  @TODO: Advanced resolvers
-     *
-     *  The User GraphQL type has two fields that are not present in the
-     *  user table in Postgres: items and borrowed.
-     *
-     *  According to our GraphQL schema, these fields should return a list of
-     *  Items (GraphQL type) the user has lent (items) and borrowed (borrowed).
-     *
-     */
