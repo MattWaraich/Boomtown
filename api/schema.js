@@ -1,13 +1,5 @@
 const { gql } = require("apollo-server-express");
 
-/**
- *  @TODO: Boomtown Schema
- *
- Be sure to finish writing resolvers for all types
- * and any relational fields, where required.
- *
- * We will create the custom Date scalar together.
- */
 module.exports = gql`
   # scalar Date
 
@@ -70,3 +62,5 @@ module.exports = gql`
     addItem(item: NewItemInput): Item
   }
 `;
+
+//Date scalar needs to be added.
