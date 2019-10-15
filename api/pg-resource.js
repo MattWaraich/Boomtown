@@ -27,7 +27,6 @@ module.exports = postgres => {
       }
     },
 
-    // GET USER AND PASSWORD FOR VERIFICATION
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
         text: "SELECT * FROM users"
@@ -41,7 +40,6 @@ module.exports = postgres => {
       }
     },
 
-    //GET USER BY ID but
     async getUserById(id) {
       const findUserId = {
         text: "SELECT * FROM users WHERE id=$1",
@@ -56,7 +54,6 @@ module.exports = postgres => {
       }
     },
 
-    //GET ITEMS
     async getItems(idToOmit) {
       const itemQuery = {
         text: "SELECT * FROM items WHERE ownerid != $1",
@@ -70,7 +67,6 @@ module.exports = postgres => {
       }
     },
 
-    //GET ITEMS FOR USER
     async getItemsForUser(id) {
       const queryItems = {
         text: "SELECT id, fullname, items FROM users WHERE id=$1;",
@@ -84,7 +80,6 @@ module.exports = postgres => {
       }
     },
 
-    // GET BORROWED ITEMS FOR USER
     async getBorrowedItemsForUser(id) {
       const findBorrowId = {
         text: "GET * items WHERE borrowid = $1",
@@ -98,7 +93,6 @@ module.exports = postgres => {
       }
     },
 
-    //GET TAGS
     async getTags(id) {
       const queryTags = {
         text: "SELECT * FROM tags",
@@ -113,7 +107,6 @@ module.exports = postgres => {
       }
     },
 
-    //GET TAGS FOR ITEMS
     async getTagsForItem(id) {
       const tagsQuery = {
         text:
@@ -133,7 +126,6 @@ module.exports = postgres => {
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
@@ -142,10 +134,8 @@ module.exports = postgres => {
                 values: [title, description, users]
               };
 
-              // Insert new Item
               const newItem = await postgres.query(newItemQuery);
 
-              // Generate tag relationships query
               const itemid = newItem.rows[0].id;
               const tagRelationQuery = await tagsQueryString(tags, itemid, "");
               const ArrayTagId = tags.map(tag => {
@@ -156,26 +146,21 @@ module.exports = postgres => {
                 values: ArrayTagId
               };
 
-              // Insert tags
               await postgres.query(newTagQuery);
 
-              // Commit the entire transaction!
               client.query("COMMIT", err => {
                 if (err) {
                   throw err;
                 }
-                // release the client back to the pool
                 done();
                 resolve(newItem.rows[0]);
               });
             });
           } catch (e) {
-            // Something went wrong
             client.query("ROLLBACK", err => {
               if (err) {
                 throw err;
               }
-              // release the client back to the pool
               done();
             });
             switch (true) {
