@@ -129,40 +129,32 @@ module.exports = postgres => {
       }
     },
 
+    
     async saveNewItem({ item, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item requires 2 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
-
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         * - Read about transactions here: https://node-postgres.com/features/transactions
-         */
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
             client.query("BEGIN", async err => {
-              const { title, description, tags } = item;
+              const { newItem, description, tags } = item;
 
               // Generate new Item query
               // @TODO
-              // -------------------------------
+              addItem(item){
+                const newItem,
+                id: boomtown.item.length + 1,
+                title: item.title,
+                imageurl: item.imageurl,
+                description: item.description,
+                itemowner: item.itemowner,
+                tags: item.tags,
+                created: item.created,
+                borrower: item.user
+
+              };
+              boomtown.item.push(newItem);
+              return newPerson;
+            },
 
               // Insert new Item
               // @TODO
@@ -207,3 +199,23 @@ module.exports = postgres => {
     }
   };
 };
+
+
+
+
+
+
+
+
+
+
+/**
+     *  @TODO: Advanced resolvers
+     *
+     *  The User GraphQL type has two fields that are not present in the
+     *  user table in Postgres: items and borrowed.
+     *
+     *  According to our GraphQL schema, these fields should return a list of
+     *  Items (GraphQL type) the user has lent (items) and borrowed (borrowed).
+     *
+     */
