@@ -135,7 +135,7 @@ const mutationResolvers = app => ({
     return true;
   },
   async addItem(parent, { input }, { pgResource }, info) {
-    // const { parent, args, context, info } = addItem;
+    
     /**
      *  @TODO: Destructuring
      *
