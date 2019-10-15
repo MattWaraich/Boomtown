@@ -137,7 +137,7 @@ module.exports = postgres => {
               const newItem = await postgres.query(newItemQuery);
 
               const itemid = newItem.rows[0].id;
-              const tagRelationQuery = await tagsQueryString(tags, itemid, "");
+              const tagRelationQuery = await tagsQueryString(tags, itemid);
               const ArrayTagId = tags.map(tag => {
                 return tag.id;
               });
@@ -150,7 +150,7 @@ module.exports = postgres => {
 
               client.query("COMMIT", err => {
                 if (err) {
-                  throw err;
+                  throw "Cannot commit";
                 }
                 done();
                 resolve(newItem.rows[0]);
@@ -159,7 +159,7 @@ module.exports = postgres => {
           } catch (e) {
             client.query("ROLLBACK", err => {
               if (err) {
-                throw err;
+                throw e;
               }
               done();
             });
