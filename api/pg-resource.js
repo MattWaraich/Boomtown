@@ -1,5 +1,5 @@
 function tagsQueryString(tags, itemid, result) {
-  for (i = tags.length; i > 0; i--) {
+  for (i = tags.length; i > 0; i++) {
     result += `($${i}, ${itemid}),`;
   }
   return result.slice(0, -1) + ";";

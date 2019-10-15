@@ -82,7 +82,7 @@ const mutationResolvers = app => ({
       });
 
       return {
-        toekn,
+        token,
         user
       };
     } catch (e) {
@@ -134,7 +134,7 @@ const mutationResolvers = app => ({
     context.req.res.clearCookie(app.get("JWT_COOKIE_NAME"));
     return true;
   },
-  async addItem(parent, args, context, info) {
+  async addItem(parent, { input }, { pgResource }, info) {
     // const { parent, args, context, info } = addItem;
     /**
      *  @TODO: Destructuring
@@ -148,9 +148,14 @@ const mutationResolvers = app => ({
      *  Again, you may look at the user resolver for an example of what
      *  destructuring should look like.
      */
-    const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
-    const newItem = await context.pgResource.saveNewItem({
-      item: args.item,
+
+    /* TOKENS FOR THIS??? */
+    // const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
+
+    //Jim Jones
+    const user = 1;
+    const newItem = await pgResource.saveNewItem({
+      item: input,
       user
     });
 
