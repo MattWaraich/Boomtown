@@ -9,17 +9,17 @@ module.exports = gql`
     imageurl: String
     description: String!
     itemowner: User!
-    tags: [Tag]
     created: String!
     borrower: User
+    tags: [Tag]
   }
 
   type User {
     id: ID!
     email: String!
     bio: String!
-    items: [Item]
     fullname: String!
+    items: [Item]
     borrowed: [Item]
   }
 

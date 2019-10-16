@@ -22,10 +22,10 @@ const relationResolvers = {
   },
 
   Item: {
-    async itemowner({ itemowner }, args, { pgResource }, info) {
+    async itemowner(parent, args, { pgResource }, info) {
       try {
-        const ownerId = pgResource.getUserById(ownerId);
-        return ownerIdUsers;
+        const user = pgResource.getUserById(parent.ownerid);
+        return user;
       } catch (e) {
         throw new ApolloError(e);
       }
