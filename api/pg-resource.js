@@ -81,8 +81,9 @@ module.exports = postgres => {
     },
 
     async getBorrowedItemsForUser(id) {
+      console.log(id);
       const findBorrowId = {
-        text: "GET * items WHERE borrowid = $1",
+        text: "SELECT * FROM items WHERE borrowid = $1",
         values: [id]
       };
       try {
@@ -93,15 +94,14 @@ module.exports = postgres => {
       }
     },
 
-    async getTags(id) {
+    async getTags() {
       const queryTags = {
-        text: "SELECT * FROM tags",
-        values: [itemTags]
+        text: "SELECT * FROM tags"
       };
       try {
-        const items = await postgres.query(queryTags);
+        const tags = await postgres.query(queryTags);
         if (!tags) throw "Tags were not found.";
-        return items.rows;
+        return tags.rows;
       } catch (e) {
         throw "Please try again!";
       }
