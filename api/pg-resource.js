@@ -1,5 +1,6 @@
 function tagsQueryString(tags, itemid, result) {
-  for (i = tags.length; i > 0; i++) {
+  for (i = tags.length; i > 0; i--) {
+    //changed this iterator to --
     result += `($${i}, ${itemid}),`;
   }
   return result.slice(0, -1) + ";";
@@ -94,31 +95,62 @@ module.exports = postgres => {
       }
     },
 
+    // async getTags() {
+    //   const queryTags = {
+    //     text: "SELECT * FROM tags"
+    //   };
+    //   try {
+    //     const tags = await postgres.query(queryTags);
+    //     if (!tags) throw "Tags were not found.";
+    //     return tags.rows;
+    //   } catch (e) {
+    //     throw "Please try again!";
+    //   }
+    // },
+
     async getTags() {
-      const queryTags = {
-        text: "SELECT * FROM tags"
-      };
       try {
-        const tags = await postgres.query(queryTags);
-        if (!tags) throw "Tags were not found.";
-        return tags.rows;
+        const tags = await postgres.query("SELECT * FROM tags");
+        if (tags.rows.length > 0) {
+          return tags.rows;
+        } else {
+          throw null;
+        }
       } catch (e) {
-        throw "Please try again!";
+        throw e;
       }
     },
 
+    // async getTagsForItem(id) {
+    //   const tagsQuery = {
+    //     text:
+    //       "SELECT A.id, A.title FROM itemtags INNER JOIN tags AS A ON A.id = tagid WHERE itemid = $1;",
+    //     values: [id]
+    //   };
+    //   try {
+    //     const tags = await postgres.query(tagsQuery);
+    //     if (!tags) throw "No item tags found.";
+    //     return tags.rows;
+    //   } catch (e) {
+    //     throw "Please try again!";
+    //   }
+    // },
+
     async getTagsForItem(id) {
-      const tagsQuery = {
-        text:
-          "SELECT A.id, A.title FROM itemtags INNER JOIN tags AS A ON A.id = tagid WHERE itemid = $1;",
-        values: [id]
-      };
       try {
+        const tagsQuery = {
+          text: `SELECT A.id, A.title FROM itemtags INNER JOIN tags AS A ON A.id = tagid WHERE itemid = $1;`,
+          values: [id]
+        };
         const tags = await postgres.query(tagsQuery);
-        if (!tags) throw "No item tags found.";
-        return tags.rows;
+
+        if (tags.rows.length > 0) {
+          return tags.rows;
+        } else {
+          return null;
+        }
       } catch (e) {
-        throw "Please try again!";
+        throw e;
       }
     },
 
@@ -130,19 +162,25 @@ module.exports = postgres => {
               const { title, description, tags } = item;
 
               const newItemQuery = {
-                text: `INSERT INTO items(title, description, ownerid, borrowid) VALUES (6, 7, 8, 9, 10) RETURNING *;`,
-                values: [title, description, ownerid, borrowid]
+                text: `INSERT INTO items(title, description, ownerid) VALUES ($1,$2,$3) RETURNING *;`,
+                values: [title, description, user]
               };
 
               const newItem = await postgres.query(newItemQuery);
 
-              const itemid = newItem.rows[0].id;
-              const tagRelationQuery = await tagsQueryString(tags, itemid);
+              const newItemid = newItem.rows[0].id;
+              const tagRelationQuery = await tagsQueryString(
+                tags,
+                newItemid,
+                ""
+              );
+
               const ArrayTagId = tags.map(tag => {
                 return tag.id;
               });
+
               const newTagQuery = {
-                text: `INSERT INTO itemtags(itemid, tagid) VALUES${tagRelationQuery}`,
+                text: `INSERT INTO itemtags(tagid, itemid) VALUES${tagRelationQuery}`,
                 values: ArrayTagId
               };
 
@@ -153,6 +191,8 @@ module.exports = postgres => {
                   throw "Cannot commit";
                 }
                 done();
+                console.log("---------------------------");
+                console.log("DONE");
                 resolve(newItem.rows[0]);
               });
             });
