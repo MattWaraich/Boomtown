@@ -1,6 +1,5 @@
 function tagsQueryString(tags, itemid, result) {
   for (i = tags.length; i > 0; i--) {
-    //changed this iterator to --
     result += `($${i}, ${itemid}),`;
   }
   return result.slice(0, -1) + ";";
@@ -95,19 +94,6 @@ module.exports = postgres => {
       }
     },
 
-    // async getTags() {
-    //   const queryTags = {
-    //     text: "SELECT * FROM tags"
-    //   };
-    //   try {
-    //     const tags = await postgres.query(queryTags);
-    //     if (!tags) throw "Tags were not found.";
-    //     return tags.rows;
-    //   } catch (e) {
-    //     throw "Please try again!";
-    //   }
-    // },
-
     async getTags() {
       try {
         const tags = await postgres.query("SELECT * FROM tags");
@@ -120,21 +106,6 @@ module.exports = postgres => {
         throw e;
       }
     },
-
-    // async getTagsForItem(id) {
-    //   const tagsQuery = {
-    //     text:
-    //       "SELECT A.id, A.title FROM itemtags INNER JOIN tags AS A ON A.id = tagid WHERE itemid = $1;",
-    //     values: [id]
-    //   };
-    //   try {
-    //     const tags = await postgres.query(tagsQuery);
-    //     if (!tags) throw "No item tags found.";
-    //     return tags.rows;
-    //   } catch (e) {
-    //     throw "Please try again!";
-    //   }
-    // },
 
     async getTagsForItem(id) {
       try {

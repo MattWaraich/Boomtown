@@ -1,5 +1,5 @@
 const { ApolloError } = require("apollo-server");
-
+//  add awaits
 const relationResolvers = {
   User: {
     items({ id }, args, { pgResource }, info) {

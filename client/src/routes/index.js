@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Redirect, Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Home from "../pages/Home";
 import Share from "../pages/Share";
 import Profile from "../pages/Profile";
@@ -11,7 +11,7 @@ export default () => {
     <Fragment>
       <Menu />
       <Switch>
-        <Route path="/welcome" component={Home} />
+        <Route exact path="/welcome" component={Home} />
         <Route path="/share" component={Share} />
         <Route path="/items" component={Items} />
         <Route path="/profile" component={Profile} />
