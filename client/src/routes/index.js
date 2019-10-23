@@ -5,19 +5,35 @@ import Share from "../pages/Share";
 import Profile from "../pages/Profile";
 import Items from "../pages/Items";
 import Menu from "../components/Menu";
+import { ViewerContext } from "../context/ViewerProvider";
+import PrivateRoute from "../components/PrivateRoute";
 
 export default () => {
   return (
-    <Fragment>
-      <Menu />
-      <Switch>
-        <Route exact path="/welcome" component={Home} />
-        <Route path="/share" component={Share} />
-        <Route path="/items" component={Items} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/profile/:id" component={Profile} />
-        <Redirect from="*" to="/items" />
-      </Switch>
-    </Fragment>
+    <ViewerContext.Consumer>
+      {({ viewer }) => {
+        if (!viewer) {
+          return (
+            <Switch>
+              <Route path="/welcome" component={Home} />
+              <Redirect from="*" to="/welcome" />
+            </Switch>
+          );
+        }
+        return (
+          <Fragment>
+            <Menu />
+            <Switch>
+              <Route exact path="/welcome" component={Home} />
+              <PrivateRoute path="/share" component={Share} />
+              <PrivateRoute path="/items" component={Items} />
+              <PrivateRoute path="/profile/:userid" component={Profile} />
+              <PrivateRoute path="/profile" component={Profile} />
+              <Redirect from="*" to="/items" />
+            </Switch>
+          </Fragment>
+        );
+      }}
+    </ViewerContext.Consumer>
   );
 };
