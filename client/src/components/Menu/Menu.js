@@ -5,19 +5,18 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { withStyles, Menu, MenuItem, Link } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import logo from "../../images/boomtown.svg";
+import MenuIcon from "@material-ui/icons/Menu";
+import FingerprintIcon from "@material-ui/icons/Fingerprint";
 
 const MenuBar = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,6 +33,7 @@ const MenuBar = ({ classes }) => {
         >
           <img src={logo} />
         </IconButton>
+
         <Menu
           id="long-menu"
           anchorEl={anchorEl}
@@ -49,9 +49,8 @@ const MenuBar = ({ classes }) => {
         >
           <Link component="button" variant="body2">
             <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Out</MenuItem>>
+            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
           </Link>
-          ); }
         </Menu>
         <Typography variant="h6" className={classes.title}>
           News
