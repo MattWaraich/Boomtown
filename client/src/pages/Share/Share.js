@@ -1,27 +1,27 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import styles from './styles';
-/* 
-  TODO: Create ShareItemFrom and ShareItemPreview in the components dir
-  and call them from this file.
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles";
+import ShareItemForm from "../../components/ShareItemForm";
+import ShareItemPreview from "../../components/ShareItemPreview";
+import Grid from "@material-ui/core/Grid";
 
-  ShareItemForm is the form that our User will use to add a new item 
-
-  When the user is filling ShareItemForm, we will show a preview of 
-  this item using the ShareItemPreview. 
-  Hint: It should look like any other Item card.
-
-*/
-// import ShareItemForm from '../../components/ShareItemForm';
-// import ShareItemPreview from '../../components/ShareItemPreview';
+const mockItem = {
+  title: "1",
+  imageurl: "1",
+  description: "1",
+  tags: [{ id: 1, title: "1" }, { id: 2, title: "3" }]
+};
 
 const Share = ({ classes }) => {
   return (
-    <div>
-      <p>
-        This is the share page located at <code>/share</code>.
-      </p>
-    </div>
+    <Grid container className={classes.sharePageGridContainer}>
+      <Grid item xs={6}>
+        <ShareItemPreview item={mockItem} />
+      </Grid>
+      <Grid className={classes.sharedItemPreview} item xs={6}>
+        <ShareItemForm />
+      </Grid>
+    </Grid>
   );
 };
 

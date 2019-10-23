@@ -25,10 +25,12 @@ const ItemCard = ({ classes, item }) => {
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {item.tags
-              .map(tag => {
-                return tag.title;
-              })
-              .join(", ")}
+              ? item.tags
+                  .map(tag => {
+                    return tag.title;
+                  })
+                  .join(", ")
+              : "no tags found"}
           </Typography>
           <Typography>{item.description}</Typography>
         </CardContent>
