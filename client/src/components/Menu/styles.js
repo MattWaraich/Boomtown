@@ -7,6 +7,20 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  navMenu: {
+    display: "flex",
+    flexGrow: "1",
+    justifyContent: "flex-end"
+  },
+  fab: {
+    boxShadow: "none"
+  },
+  extendedIcon: {
+    marginRight: "15px"
+  },
+  logo: {
+    height: "48px"
   }
 });
 

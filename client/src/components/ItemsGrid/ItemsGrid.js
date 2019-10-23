@@ -1,12 +1,14 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import ItemCard from "../../components/ItemCard";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles";
 
-const ItemsGrid = ({ items }) => (
-  <Grid container spacing={3}>
+const ItemsGrid = ({ classes, items }) => (
+  <Grid className={classes.gridContainerStyle} container spacing={3}>
     {items.map(item => {
       return (
-        <Grid key={item.id} item>
+        <Grid key={item.id} item xs={12} sm={6} md={4}>
           <ItemCard item={item} />
         </Grid>
       );
@@ -14,47 +16,4 @@ const ItemsGrid = ({ items }) => (
   </Grid>
 );
 
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   paper: {
-//     padding: theme.spacing(2),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//   },
-// }));
-
-// export default function CenteredGrid() {
-//   const classes = useStyles();
-
-//   return (
-//     <div className={classes.root}>
-//       <Grid container spacing={3}>
-//         <Grid item xs={12}>
-//           <Paper className={classes.paper}>xs=12</Paper>
-//         </Grid>
-//         <Grid item xs={6}>
-//           <Paper className={classes.paper}>xs=6</Paper>
-//         </Grid>
-//         <Grid item xs={6}>
-//           <Paper className={classes.paper}>xs=6</Paper>
-//         </Grid>
-//         <Grid item xs={3}>
-//           <Paper className={classes.paper}>xs=3</Paper>
-//         </Grid>
-//         <Grid item xs={3}>
-//           <Paper className={classes.paper}>xs=3</Paper>
-//         </Grid>
-//         <Grid item xs={3}>
-//           <Paper className={classes.paper}>xs=3</Paper>
-//         </Grid>
-//         <Grid item xs={3}>
-//           <Paper className={classes.paper}>xs=3</Paper>
-//         </Grid>
-//       </Grid>
-//     </div>
-//   );
-// }
-
-export default ItemsGrid;
+export default withStyles(styles)(ItemsGrid);

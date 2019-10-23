@@ -4,7 +4,6 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./routes";
-import { NavLink } from "react-router-dom";
 
 // @TODO: Uncomment each module as needed in your client app
 // import { ApolloProvider } from 'react-apollo'
@@ -48,11 +47,6 @@ import theme from "./theme";
  * the <BrowserRouter /> component so the router is aware of whether a
  * user is currently logged in and who that user is.
  */
-
-// @TODO: Remove this import once you have your router working below
-import Home from "./pages/Home";
-import Items from "./pages/Items";
-// import profile etc
 
 import "./index.css";
 import { ApolloProvider } from "react-apollo";

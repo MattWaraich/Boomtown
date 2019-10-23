@@ -1,15 +1,23 @@
 import React from "react";
 import styles from "./styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import { withStyles, Menu, MenuItem, Link } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  withStyles,
+  Menu,
+  MenuItem,
+  Link,
+  ListItemIcon,
+  Fab
+} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import logo from "../../images/boomtown.svg";
-import MenuIcon from "@material-ui/icons/Menu";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const MenuBar = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,39 +37,59 @@ const MenuBar = ({ classes }) => {
           className={classes.menuButton}
           color="inherit"
           aria-label="menu"
-          onClick={handleClick}
         >
-          <img src={logo} />
+          <img className={classes.logo} src={logo} />
         </IconButton>
+        <div className={classes.navMenu}>
+          <Fab
+            variant="extended"
+            aria-label="delete"
+            className={classes.fab}
+            color="primary"
+          >
+            <AddCircleIcon className={classes.extendedIcon} />
+            Share Something
+          </Fab>
 
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: 48 * 4.5,
-              width: 200
-            }
-          }}
-        >
-          <Link component="button" variant="body2">
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
-          </Link>
-        </Menu>
-        <Typography variant="h6" className={classes.title}>
-          News
-        </Typography>
-        <Button color="inherit">Login</Button>
-        <MoreVertIcon />
+          <IconButton onClick={handleClick}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: 48 * 4.5,
+                width: 200
+              }
+            }}
+          >
+            <Link component="button" variant="body2">
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <FingerprintIcon fontSize="small" />
+                </ListItemIcon>
+                <Typography variant="inherit" noWrap>
+                  Profile
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <PowerSettingsNewIcon fontSize="small" />
+                </ListItemIcon>
+                <Typography variant="inherit" noWrap>
+                  Sign Out
+                </Typography>
+              </MenuItem>
+            </Link>
+          </Menu>
+        </div>
       </Toolbar>
     </AppBar>
   );
 };
 
 export default withStyles(styles)(MenuBar);
-
-//only components should be capitalized
