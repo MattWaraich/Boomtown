@@ -17,6 +17,7 @@ import logo from "../../images/boomtown.svg";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import { NavLink } from "react-router-dom";
 
 const MenuBar = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -31,28 +32,33 @@ const MenuBar = ({ classes }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="menu"
-        >
-          <img className={classes.logo} src={logo} />
-        </IconButton>
-        <div className={classes.navMenu}>
-          <Fab
-            variant="extended"
-            aria-label="delete"
-            className={classes.fab}
-            color="primary"
+        <NavLink to="/items">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
           >
-            <AddCircleIcon className={classes.extendedIcon} />
-            Share Something
-          </Fab>
+            <img className={classes.logo} src={logo} />
+          </IconButton>
+        </NavLink>
 
+        <div className={classes.navMenu}>
+          <NavLink to="/share">
+            <Fab
+              variant="extended"
+              aria-label="delete"
+              className={classes.fab}
+              color="primary"
+            >
+              <AddCircleIcon className={classes.extendedIcon} />
+              Share Something
+            </Fab>
+          </NavLink>
           <IconButton onClick={handleClick}>
             <MoreVertIcon />
           </IconButton>
+
           <Menu
             id="long-menu"
             anchorEl={anchorEl}
@@ -68,17 +74,22 @@ const MenuBar = ({ classes }) => {
           >
             <Link component="button" variant="body2">
               <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <FingerprintIcon fontSize="small" />
-                </ListItemIcon>
+                <NavLink to="/profile">
+                  <ListItemIcon>
+                    <FingerprintIcon fontSize="small" />
+                  </ListItemIcon>
+                </NavLink>
                 <Typography variant="inherit" noWrap>
                   Profile
                 </Typography>
               </MenuItem>
+
               <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <PowerSettingsNewIcon fontSize="small" />
-                </ListItemIcon>
+                <NavLink to="/welcome">
+                  <ListItemIcon>
+                    <PowerSettingsNewIcon fontSize="small" />
+                  </ListItemIcon>
+                </NavLink>
                 <Typography variant="inherit" noWrap>
                   Sign Out
                 </Typography>

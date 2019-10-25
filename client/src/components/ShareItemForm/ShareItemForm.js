@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Field, Form } from "react-final-form";
 import Input from "@material-ui/core/Input";
+import { FormSpy } from "react-final-form";
+import { Checkbox } from "@material-ui/core";
 
 class ShareForm extends Component {
   constructor(props) {
@@ -18,11 +20,23 @@ class ShareForm extends Component {
           <strong>SHARE. BORROW. PROSPER.</strong>
         </h1>
 
+        {/* SELECT AN IMAGE BUTTON  */}
+
         <Form
           onSubmit={this.onSubmit}
           validate={this.validate}
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
+              <FormSpy
+                subscription={{ values: true }}
+                onChange={({ values }) => {
+                  if (values) {
+                    this.subscription(values);
+                  }
+                  return "";
+                }}
+              />
+
               <Field
                 name="title"
                 render={({ input, meta }) => (
