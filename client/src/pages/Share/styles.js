@@ -7,6 +7,8 @@ const styles = theme => ({
     justifyContent: "space-between",
     padding: "80px"
   },
+
+
   sharedItemPreview: {
     height: "100%",
     color: "red",

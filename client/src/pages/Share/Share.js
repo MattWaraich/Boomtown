@@ -13,7 +13,7 @@ const mockItem = {
   tags: [{ id: 1, title: "1" }, { id: 2, title: "3" }]
 };
 
-const Share = ({ classes }) => {
+const Share = ({ classes, tags }) => {
   return (
     <Grid container className={classes.sharePageGridContainer}>
       <Grid container className={classes.itemShareCardContainer}>
@@ -21,7 +21,7 @@ const Share = ({ classes }) => {
           <ShareItemPreview item={mockItem} />
         </Grid>
         <Grid className={classes.sharedItemPreview} item xs={6}>
-          <ShareItemForm />
+          <ShareItemForm tags={tags} />
         </Grid>
       </Grid>
     </Grid>
