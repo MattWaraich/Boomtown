@@ -94,7 +94,6 @@ class ShareForm extends Component {
                       )}
                     />
 
-                    {/* <Field /> */}
 
                     <button type="submit">Share</button>
                   </form>
