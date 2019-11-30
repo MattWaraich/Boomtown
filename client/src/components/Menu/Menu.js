@@ -18,8 +18,10 @@ import FingerprintIcon from "@material-ui/icons/Fingerprint";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { NavLink } from "react-router-dom";
+import { compose, graphql } from "react-apollo";
+import { LOGOUT_MUTATION, VIEWER_QUERY } from "../../apollo/queries";
 
-const MenuBar = ({ classes }) => {
+const MenuBar = ({ classes, SIGNOUT }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClose = () => {
@@ -72,29 +74,40 @@ const MenuBar = ({ classes }) => {
               }
             }}
           >
-            <Link component="button" variant="body2">
-              <MenuItem onClick={handleClose}>
-                <NavLink to="/profile">
-                  <ListItemIcon>
-                    <FingerprintIcon fontSize="small" />
-                  </ListItemIcon>
-                </NavLink>
+            {/* <Link component="button" variant="body2"> */}
+            <MenuItem onClick={handleClose}>
+              <NavLink to="/profile">
+                <ListItemIcon>
+                  <FingerprintIcon fontSize="small" />
+                </ListItemIcon>
                 <Typography variant="inherit" noWrap>
                   Profile
                 </Typography>
-              </MenuItem>
+              </NavLink>
+            </MenuItem>
 
-              <MenuItem onClick={handleClose}>
-                <NavLink to="/welcome">
-                  <ListItemIcon>
-                    <PowerSettingsNewIcon fontSize="small" />
-                  </ListItemIcon>
-                </NavLink>
-                <Typography variant="inherit" noWrap>
+            <MenuItem
+              onClick={() => {
+                console.log(1);
+                handleClose();
+                try {
+                  SIGNOUT();
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+            >
+              <ListItemIcon>
+                <PowerSettingsNewIcon fontSize="small" />
+                <Typography
+                  className={classes.signOutButton}
+                  variant="inherit"
+                  noWrap
+                >
                   Sign Out
                 </Typography>
-              </MenuItem>
-            </Link>
+              </ListItemIcon>
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>
@@ -102,4 +115,11 @@ const MenuBar = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(MenuBar);
+const refetchQueries = [{ query: VIEWER_QUERY }];
+
+export default compose(
+  graphql(LOGOUT_MUTATION, {
+    options: { refetchQueries },
+    name: "SIGNOUT"
+  })
+)(withStyles(styles)(MenuBar));

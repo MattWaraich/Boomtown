@@ -6,13 +6,14 @@ import styles from "./styles";
 
 const ItemsGrid = ({ classes, items }) => (
   <Grid className={classes.gridContainerStyle} container spacing={3}>
-    {items.map(item => {
-      return (
-        <Grid key={item.id} item xs={12} sm={6} md={4}>
-          <ItemCard item={item} />
-        </Grid>
-      );
-    })}
+    {items &&
+      items.map(item => {
+        return (
+          <Grid key={item.id} item xs={12} sm={6} md={4}>
+            <ItemCard item={item} />
+          </Grid>
+        );
+      })}
   </Grid>
 );
 

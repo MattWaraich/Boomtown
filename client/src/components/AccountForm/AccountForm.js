@@ -1,96 +1,109 @@
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import React, { Component } from "react";
-import Typography from "@material-ui/core/Typography";
-
 import { Form, Field } from "react-final-form";
-
 import {
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
   VIEWER_QUERY
 } from "../../apollo/queries";
 import { graphql, compose } from "react-apollo";
+import { withStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  Typography,
+  TextField
+} from "@material-ui/core";
 import validate from "./helpers/validation";
-
 import styles from "./styles";
+import PropTypes from "prop-types";
 
 class AccountForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formToggle: true
+      formToggle: true,
+      error: null
     };
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, LOGIN_MUTATION, SIGNUP_MUTATION } = this.props;
+    const BoolFormToggle = this.state.formToggle;
 
     return (
       <Form
-        render={() => {
+        onSubmit={async values => {
+          if (this.state.error) {
+          } else {
+            try {
+              BoolFormToggle
+                ? await LOGIN_MUTATION({ variables: { user: values } })
+                : await SIGNUP_MUTATION({ variables: { user: values } });
+            } catch (e) {
+              this.setState({ error: { database: { ...e } } });
+            }
+          }
+        }}
+        validate={values => {
+          return validate(values, BoolFormToggle);
+        }}
+        render={({ handleSubmit, form, valid, submitSucceeded }) => {
           return (
             <form
-              onSubmit={() => {
-                console.log("Submitted");
+              onSubmit={e => {
+                handleSubmit(e);
               }}
+              noValidate
               className={classes.accountForm}
             >
-              {!this.state.formToggle && (
-                <FormControl fullWidth className={classes.formControl}>
+              {!BoolFormToggle && (
+                <FormControl fullWidth>
                   <InputLabel htmlFor="fullname">Username</InputLabel>
-
-                  {/* @TODO: Wrap in a Final Form <Field /> */}
                   <Field
-                    name="Username"
+                    name="fullname"
                     render={({ input, meta }) => (
                       <Input
                         id="fullname"
+                        {...input}
                         type="text"
-                        inputProps={{
-                          autoComplete: "off"
-                        }}
-                        value={""}
+                        value={input.value}
                       />
                     )}
                   />
-                  
-
-                  {/* @TODO: Close Final Form <Field /> */}
                 </FormControl>
               )}
-              <FormControl fullWidth className={classes.formControl}>
+              <FormControl fullWidth>
                 <InputLabel htmlFor="email">Email</InputLabel>
-
-                {/* @TODO: Wrap in a Final Form <Field /> */}
-                <Input
-                  id="email"
-                  type="text"
-                  inputProps={{
-                    autoComplete: "off"
-                  }}
-                  value={""}
+                <Field
+                  name="email"
+                  render={({ meta, input }) => (
+                    <Input
+                      id="email"
+                      {...input}
+                      type="text"
+                      value={input.value}
+                    />
+                  )}
                 />
-                {/* @TODO: Close Final Form <Field /> */}
               </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                {/* @TODO: Wrap in a Final Form <Field /> */}
-                <Input
-                  id="password"
-                  type="password"
-                  inputProps={{
-                    autoComplete: "off"
-                  }}
-                  value={""}
+              <FormControl fullWidth>
+                <Field
+                  name="password"
+                  render={({ meta, input }) => (
+                    <TextField
+                      id="password"
+                      label="Password"
+                      type="password"
+                      {...input}
+                      value={input.value}
+                    />
+                  )}
                 />
-                {/* @TODO: Close Final Form <Field /> */}
               </FormControl>
-              <FormControl className={classes.formControl}>
+              <FormControl>
                 <Grid
                   container
                   direction="row"
@@ -99,48 +112,61 @@ class AccountForm extends Component {
                 >
                   <Button
                     type="submit"
-                    className={classes.formButton}
-                    variant="contained"
                     size="large"
+                    variant="contained"
                     color="secondary"
-                    disabled={
-                      false // @TODO: This prop should depend on pristine or valid state of form
-                    }
+                    disabled={!valid}
                   >
-                    {this.state.formToggle ? "Enter" : "Create Account"}
+                    {BoolFormToggle ? "Enter" : "Create Account"}
                   </Button>
                   <Typography>
                     <button
-                      className={classes.formToggle}
                       type="button"
                       onClick={() => {
-                        // @TODO: Reset the form on submit
                         this.setState({
-                          formToggle: !this.state.formToggle
+                          formToggle: !BoolFormToggle
                         });
                       }}
                     >
-                      {this.state.formToggle
+                      {BoolFormToggle
                         ? "Create an account."
                         : "Login to existing account."}
                     </button>
                   </Typography>
                 </Grid>
               </FormControl>
-              <Typography className={classes.errorMessage}>
-                {/* @TODO: Display sign-up and login errors */}
+              <Typography>
+                {submitSucceeded && this.state.error
+                  ? this.state.error.email
+                    ? this.state.error.email
+                    : this.state.error.database
+                    ? this.state.error.database.message.split(": ")[1]
+                    : ""
+                  : ""}
               </Typography>
             </form>
-            // @TODO: Close Final Form <Form />
           );
         }}
-      />
+      ></Form>
     );
   }
 }
 
-// @TODO: Use compose to add the login and signup mutations to this components props.
-//declare mutations for signup and login, import from reactApollo
+AccountForm.propTypes = {
+  LOGIN_MUTATION: PropTypes.func.isRequired,
+  SIGNUP_MUTATION: PropTypes.func.isRequired
+};
 
-// @TODO: Refetch the VIEWER_QUERY to reload the app and access authenticated routes.
-export default withStyles(styles)(AccountForm);
+const refetchQueries = [{ query: VIEWER_QUERY }];
+
+export default compose(
+  graphql(SIGNUP_MUTATION, {
+    options: { refetchQueries },
+    name: "SIGNUP_MUTATION"
+  }),
+  graphql(LOGIN_MUTATION, {
+    options: { refetchQueries },
+    name: "LOGIN_MUTATION"
+  }),
+  withStyles(styles)
+)(AccountForm);

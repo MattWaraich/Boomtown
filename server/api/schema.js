@@ -17,7 +17,7 @@ module.exports = gql`
   type User {
     id: ID!
     email: String!
-    bio: String!
+    bio: String
     fullname: String!
     items: [Item]
     borrowed: [Item]
@@ -73,5 +73,3 @@ module.exports = gql`
     addItem(item: NewItemInput): Item
   }
 `;
-
-//Date scalar needs to be added.

@@ -68,8 +68,6 @@ export const ALL_TAGS_QUERY = gql`
   }
 `;
 
-// # @TODO: Pass the item and image into the addItem mutation as arguments
-//     # and return the new item id when the mutation is complete.
 export const ADD_ITEM_MUTATION = gql`
   mutation addItem(
     $title: String!
@@ -87,10 +85,6 @@ export const ADD_ITEM_MUTATION = gql`
   }
 `;
 
-/**
- * Auth-related queries and mutations.
- */
-
 export const VIEWER_QUERY = gql`
   query {
     viewer {
@@ -107,24 +101,30 @@ export const LOGOUT_MUTATION = gql`
   }
 `;
 
-// Pass the user into the signup mutation as an argument
-// and return the token and user id.
 export const SIGNUP_MUTATION = gql`
-  mutation signup($user: SignUpInput!) {
+  mutation signup($user: SignupInput!) {
     signup(user: $user) {
       token
-      user
+      user {
+        id
+        email
+        fullname
+        bio
+      }
     }
   }
 `;
 
-// Pass the user into the login mutation as an argument
-// and return the token and user id.
 export const LOGIN_MUTATION = gql`
   mutation login($user: LoginInput!) {
     login(user: $user) {
       token
-      user
+      user {
+        id
+        email
+        fullname
+        bio
+      }
     }
   }
 `;

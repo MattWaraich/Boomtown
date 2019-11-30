@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Share from "./Share";
-// import FullScreenLoader from '../../components/FullScreenLoader';
 import { Query } from "react-apollo";
 import {} from "../../apollo/queries";
 import { ALL_TAGS_QUERY } from "../../apollo/queries";

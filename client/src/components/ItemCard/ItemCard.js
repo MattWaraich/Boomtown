@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import * as moment from "moment";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -10,16 +11,23 @@ import {
   Typography
 } from "@material-ui/core";
 import styles from "./styles";
+import Gravatar from "react-gravatar";
 
-const ItemCard = ({ classes, item }) => {
+const ItemCard = ({ classes, item, props }) => {
   return (
     <Fragment>
-      {console.log(item)}
       <Card>
         <CardActionArea>
           <CardMedia className={classes.cardItemImages} image={item.imageurl} />
         </CardActionArea>
         <CardContent>
+          <div className={classes.gravatarDisplay}>
+            <Gravatar email="MarkZ@gmail.com" />
+            <div className={classes.gravatarName}>
+              <p>JEFF</p>
+            </div>
+            <p>{moment(item.created).fromNow()}</p>
+          </div>
           <Typography gutterBottom variant="h5" component="h2">
             {item.title}
           </Typography>
@@ -35,7 +43,13 @@ const ItemCard = ({ classes, item }) => {
           <Typography>{item.description}</Typography>
         </CardContent>
         <CardActions>
-          <Button variant="contained">BORROW</Button>
+          <Button
+            className={classes.itemBorrowButton}
+            type="submit"
+            variant="contained"
+          >
+            BORROW
+          </Button>
         </CardActions>
       </Card>
     </Fragment>

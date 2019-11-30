@@ -10,7 +10,10 @@ const mockItem = {
   title: "1",
   imageurl: "1",
   description: "1",
-  tags: [{ id: 1, title: "1" }, { id: 2, title: "3" }]
+  tags: [
+    { id: 1, title: "1" },
+    { id: 2, title: "3" }
+  ]
 };
 
 const Share = ({ classes, tags }) => {

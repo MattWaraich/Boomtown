@@ -24,9 +24,8 @@ export default () => {
           <Fragment>
             <Menu />
             <Switch>
-              <Route exact path="/welcome" component={Home} />
-              <PrivateRoute path="/share" component={Share} />
               <PrivateRoute path="/items" component={Items} />
+              <PrivateRoute path="/share" component={Share} />
               <PrivateRoute path="/profile/:userid" component={Profile} />
               <PrivateRoute path="/profile" component={Profile} />
               <Redirect from="*" to="/items" />

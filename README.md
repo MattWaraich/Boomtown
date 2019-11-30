@@ -1,6 +1,6 @@
-# Project 1 "Boomtown Part 1"
+# Project "Boomtown"
 
-**This is the first project for the app dev program at RED Academy using JavScript, PostgreSQL, Node.js, Apollo Servers, and GraphQL.**
+**This is the first project for the app dev program at RED Academy using JavaScript, PostgreSQL, Node.js, Apollo Servers, and GraphQL.**
 
 ## Technologies Used
 
@@ -18,10 +18,23 @@
 - Contain a package.json with all applicable fields completed
 - Use Apollo Server to initialize a GraphQL server
 
-## Installations
+## Installation Instructions
 
-- Installation of package.json
-- Installation of various libraries in order to perform required project tasks
+```
+- Run 'yarn install'
+```
+
+## To Run the Server (run from server directory)
+
+```
+- yarn start:dev
+```
+
+## To Run the Client (run from client directory)
+
+```
+- yarn run build
+```
 
 ## Personal Learnings
 

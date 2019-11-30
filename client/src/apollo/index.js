@@ -7,13 +7,12 @@ import { onError } from "apollo-link-error";
 const httpLink = createHttpLink({
   includeExtensions: true,
   uri: process.env.NODE_ENV !== "production" && "http://localhost:8080/graphql",
-  credentials: process.env.NODE_ENV === "production" ? "same-origin" : ""
+  credentials: "include"
 });
 
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
-      // Log better error messages to console
       if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path }) =>
           console.log(
@@ -25,14 +24,8 @@ const client = new ApolloClient({
     }),
 
     httpLink
-
-    /**
-     * @TODO: Set your httpLink link as the next item in this array.
-     * Read about httpLink here:
-     * Don't forget to add to add a comma after the first array item above!
-     */
   ]),
-  cache: new InMemoryCache() // Pull data from client-side cache, if available
+  cache: new InMemoryCache()
 });
 
 export default client;

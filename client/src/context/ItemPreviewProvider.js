@@ -8,10 +8,10 @@ class ItemPreviewProvider extends Component {
     this.state = {
       item: {
         id: "Insert your name.",
-        title: "Insert your title.",
+        title: "Name your item",
         tag: "Pick your tags.",
         imageurl: "https://via.placeholder.com/350",
-        description: "Description of item.",
+        description: "Describe your item",
         itemowner: "Item owner.",
         created: "Created",
         borrower: "Borrower",
@@ -21,6 +21,7 @@ class ItemPreviewProvider extends Component {
   }
   updatePreview = item => {
     this.setState({ item: { ...this.state.item, ...item } });
+    console.log("update preview: ", item);
   };
 
   resetPreview = () => {

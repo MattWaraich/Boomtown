@@ -3,7 +3,8 @@ import { Field, Form } from "react-final-form";
 import Input from "@material-ui/core/Input";
 import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
 import { FormSpy } from "react-final-form";
-import { Checkbox } from "@material-ui/core";
+import { Button, withStyles } from "@material-ui/core";
+import styles from "./styles";
 
 class ShareForm extends Component {
   constructor(props) {
@@ -38,19 +39,18 @@ class ShareForm extends Component {
   };
 
   render() {
-    const { tags } = this.props;
+    const { tags, classes } = this.props;
     console.log(tags);
     return (
       <ItemPreviewContext.Consumer>
-        {/* REST PREVIEW HERE */}
         {({ updatePreview, resetPreview }) => {
           return (
             <div className="sharePageInputFields">
-              <h1>
-                <strong>SHARE. BORROW. PROSPER.</strong>
-              </h1>
-
-              {/* SELECT AN IMAGE BUTTON  */}
+              <div className="sharePageTitle">
+                <h1>
+                  <strong>SHARE. BORROW. PROSPER.</strong>
+                </h1>
+              </div>
 
               <Form
                 onSubmit={this.onSubmit}
@@ -65,6 +65,22 @@ class ShareForm extends Component {
                         }
                       }}
                     />
+
+                    <Field
+                      name="imageurl"
+                      render={({ input, meta }) => (
+                        <Input
+                          {...input}
+                          value={input.value}
+                          placeholder="Image URL"
+                          fullWidth
+                          inputProps={{
+                            "aria-label": "image"
+                          }}
+                        />
+                      )}
+                    />
+
                     <Field
                       name="title"
                       render={({ input, meta }) => (
@@ -93,9 +109,24 @@ class ShareForm extends Component {
                         />
                       )}
                     />
+                    <div className={classes.tagsOptions}>
+                      {tags.map(tag => {
+                        return (
+                          <label>
+                            <p>{tag.title}</p>
 
-
-                    <button type="submit">Share</button>
+                            <input type="checkbox" key={tag.id} tag={tag} />
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <Button
+                      className={classes.shareButton}
+                      type="submit"
+                      variant="outlined"
+                    >
+                      Share
+                    </Button>
                   </form>
                 )}
               />
@@ -107,4 +138,4 @@ class ShareForm extends Component {
   }
 }
 
-export default ShareForm;
+export default withStyles(styles)(ShareForm);

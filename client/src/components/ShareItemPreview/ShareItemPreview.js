@@ -1,8 +1,10 @@
 import React from "react";
 import ItemCard from "../ItemCard";
 import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
+import styles from "./styles";
+import { withStyles } from "@material-ui/core";
 
-const shareItemPreview = item => {
+const shareItemPreview = ({ classes }) => {
   return (
     <ItemPreviewContext.Consumer>
       {({ state }) => {
@@ -11,6 +13,4 @@ const shareItemPreview = item => {
     </ItemPreviewContext.Consumer>
   );
 };
-export default shareItemPreview;
-
-// dont return multiple children - caused an error on line 11 
+export default withStyles(styles)(shareItemPreview);

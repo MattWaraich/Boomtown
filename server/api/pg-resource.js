@@ -30,14 +30,15 @@ module.exports = postgres => {
 
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: "SELECT * FROM users"
+        text: "SELECT * FROM users WHERE email=$1",
+        values: [email]
       };
       try {
         const user = await postgres.query(findUserQuery);
         if (!user) throw "User was not found.";
         return user.rows[0];
       } catch (e) {
-        throw "Please try again!";
+        throw "User  not found!";
       }
     },
 
@@ -70,7 +71,7 @@ module.exports = postgres => {
 
     async getItemsForUser(id) {
       const queryItems = {
-        text: "SELECT id, fullname, items FROM users WHERE id=$1;",
+        text: "SELECT * FROM items WHERE ownerid=$1;",
         values: [id]
       };
       try {
@@ -82,7 +83,6 @@ module.exports = postgres => {
     },
 
     async getBorrowedItemsForUser(id) {
-      console.log(id);
       const findBorrowId = {
         text: "SELECT * FROM items WHERE borrowid = $1",
         values: [id]

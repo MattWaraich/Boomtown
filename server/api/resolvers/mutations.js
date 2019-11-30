@@ -11,8 +11,8 @@ function setCookie({ tokenName, token, res }) {
 }
 
 function generateToken(user, secret) {
-  const { id, email } = user; // Omit the password from the token
-  return jwt.sign({ id, email }, secret, {
+  const { id, email, fullname, bio } = user;
+  return jwt.sign({ id, email, fullname, bio }, secret, {
     expiresIn: "6h"
   });
 }
@@ -23,9 +23,7 @@ const jwt = require("jsonwebtoken");
 const mutationResolvers = app => ({
   async signup(
     parent,
-    {
-      user: { fullname, email, password }
-    },
+    { user: { fullname, email, password } },
     { pgResource, req }
   ) {
     try {
@@ -54,33 +52,12 @@ const mutationResolvers = app => ({
     }
   },
 
-  async login(
-    parent,
-    {
-      user: { email, password }
-    },
-    { pgResource, req }
-  ) {
+  async login(parent, { user: { email, password } }, { pgResource, req }) {
     try {
-      const user = await pgResource.getUserAndPasswordForVerification(
-        args.user.email
-      );
-      if (!user) throw "User was not found.";
-
-      const valid = false;
-      const same = await bcrypt.compare(password, users[userID].password);
-      if (same) {
-        setCookie({
-          name: tokenConfig.name,
-          value: generateToken(
-            { ...users[userID], id: userId },
-            tokenConfig.secret
-          ),
-          res: req.res
-        });
-        return true;
-      }
-      if (!valid) throw "Invalid Password";
+      const user = await pgResource.getUserAndPasswordForVerification(email);
+      if (!user) throw "User not found.";
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) throw "Invalid Password!";
 
       const token = generateToken(user, app.get("JWT_SECRET"));
 
@@ -104,22 +81,6 @@ const mutationResolvers = app => ({
     return true;
   },
   async addItem(parent, { item }, { pgResource }, info) {
-    // add awaits
-    /**
-     *  @TODO: Destructuring
-     *
-     *  The 'args' and 'context' parameters of this resolver can be destructured
-     *  to make things more readable and avoid duplication.
-     *
-     *  When you're finished with this resolver, destructure all necessary
-     *  parameters in all of your resolver functions.
-     *
-     *  Again, you may look at the user resolver for an example of what
-     *  destructuring should look like.
-     */
-
-    // const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
-
     const user = 1;
     const newItem = await pgResource.saveNewItem({
       item: item,
