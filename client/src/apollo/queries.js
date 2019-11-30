@@ -73,10 +73,19 @@ export const ADD_ITEM_MUTATION = gql`
     $title: String!
     $description: String!
     $tags: [AssignedTag]!
+    $imageurl: String!
   ) {
-    addItem(item: { title: $title, description: $description, tags: $tags }) {
+    addItem(
+      item: {
+        title: $title
+        description: $description
+        imageurl: $imageurl
+        tags: $tags
+      }
+    ) {
       title
       description
+      imageurl
       tags {
         id
         title
