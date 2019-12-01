@@ -1,5 +1,4 @@
 const { ApolloError } = require("apollo-server");
-//  add awaits
 const relationResolvers = {
   User: {
     items({ id }, args, { pgResource }, info) {
@@ -24,7 +23,7 @@ const relationResolvers = {
   Item: {
     async itemowner(parent, args, { pgResource }, info) {
       try {
-        const user = pgResource.getUserById(parent.ownerid);
+        const user = await pgResource.getUserById(parent.ownerid);
         return user;
       } catch (e) {
         throw new ApolloError(e);
@@ -32,7 +31,7 @@ const relationResolvers = {
     },
     async tags({ id }, args, { pgResource }, info) {
       try {
-        const tags = pgResource.getTagsForItem(id);
+        const tags = await pgResource.getTagsForItem(id);
         return tags;
       } catch (e) {
         throw new ApolloError(e);
@@ -41,7 +40,7 @@ const relationResolvers = {
     async borrower({ borrower }, args, { pgResource }, info) {
       try {
         if (borrower) {
-          const borrowUser = pgResource.getUserById(borrower);
+          const borrowUser = await pgResource.getUserById(borrower);
           return borrowUser;
         } else {
           return null;

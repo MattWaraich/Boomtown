@@ -94,10 +94,10 @@ class AccountForm extends Component {
                   name="password"
                   render={({ meta, input }) => (
                     <TextField
+                      {...input}
                       id="password"
                       label="Password"
                       type="password"
-                      {...input}
                       value={input.value}
                     />
                   )}
