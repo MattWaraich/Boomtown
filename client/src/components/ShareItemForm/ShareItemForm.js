@@ -19,18 +19,17 @@ class ShareForm extends Component {
     try {
       const newItem = {
         ...values,
-        tags: this.applyTags(values.tags || [], allTags)
+        tags: this.applyTags(values.tags, allTags)
       };
-      console.log("newItem: ", newItem);
-      await addItem({ variables: { item: newItem } });
+      await addItem({ variables: { input: newItem } });
     } catch (e) {
       throw e;
     }
   };
 
-  validate = () => {
-    console.log(2);
-  };
+  // validate = values => {
+  //   console.log(values);
+  // };
 
   applyTags = (tags, allTags) => {
     return tags.map(tag => {
@@ -53,7 +52,7 @@ class ShareForm extends Component {
 
   render() {
     const { tags, classes } = this.props;
-    console.log(tags);
+
     return (
       <ItemPreviewContext.Consumer>
         {({ updatePreview, resetPreview }) => {
@@ -134,18 +133,19 @@ class ShareForm extends Component {
                           <div className={classes.tagsOptions}>
                             {tags.map(tag => {
                               return (
-                                <label>
-                                  <p>{tag.title}</p>
-
-                                  <input
+                                <label key={tag.id}>
+                                  <Field
+                                    name="tags"
+                                    component="input"
                                     type="checkbox"
-                                    key={tag.id}
-                                    tag={tag}
+                                    value={tag.title}
                                   />
+                                  {tag.title}
                                 </label>
                               );
                             })}
                           </div>
+
                           <Button
                             className={classes.shareButton}
                             type="submit"
@@ -153,6 +153,7 @@ class ShareForm extends Component {
                           >
                             Share
                           </Button>
+                          {data && <div>Complete</div>}
                         </form>
                       )}
                     />

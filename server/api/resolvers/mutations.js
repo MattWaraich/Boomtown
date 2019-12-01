@@ -78,9 +78,8 @@ const mutationResolvers = app => ({
     context.req.res.clearCookie(app.get("JWT_COOKIE_NAME"));
     return true;
   },
-  async addItem(parent, { item }, { pgResource, token, user }, info) {
-    console.log("token: ", token);
-    console.log("user: ", user);
+
+  async addItem(parent, { item }, { pgResource, user }, info) {
     const newItem = await pgResource.saveNewItem({
       item: item,
       user

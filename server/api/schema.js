@@ -55,13 +55,14 @@ module.exports = gql`
 
   input NewItemInput {
     title: String!
-    description: String!
+    description: String
     tags: [AssignedTag]!
     imageurl: String
   }
 
   type Query {
     user(id: ID!): User
+    item(id: ID!): Item
     viewer: User
     items(filter: ID): [Item]
     tags: [Tag]
