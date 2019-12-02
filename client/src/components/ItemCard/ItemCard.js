@@ -81,9 +81,9 @@ ItemCard.propTypes = {
     tags: PropTypes.array,
     imageurl: PropTypes.string,
     description: PropTypes.string,
+    created: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     title: PropTypes.string.isRequired,
-    itemowner: PropTypes.object,
-    created: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    itemowner: PropTypes.object
   }),
 
   viewer: PropTypes.shape({

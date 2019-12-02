@@ -8,7 +8,6 @@ import {
   withStyles,
   Menu,
   MenuItem,
-  Link,
   ListItemIcon,
   Fab
 } from "@material-ui/core";

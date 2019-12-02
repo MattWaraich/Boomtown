@@ -1,7 +1,10 @@
 const styles = theme => {
   return {
-    gridContainerStyle: {
-      // padding: "80px"
+    noItemsYet: {
+      color: "#ffb300",
+      display: "flex",
+      paddingLeft: "600px",
+      paddingTop: "100px"
     }
   };
 };

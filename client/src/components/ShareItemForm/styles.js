@@ -1,5 +1,3 @@
-import { blue, grey, red, black } from "@material-ui/core/colors";
-
 const styles = theme => ({
   sharePageInput: {
     paddingLeft: "50px"
