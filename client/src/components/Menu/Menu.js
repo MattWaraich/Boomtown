@@ -40,7 +40,7 @@ const MenuBar = ({ classes, SIGNOUT }) => {
             color="inherit"
             aria-label="menu"
           >
-            <img className={classes.logo} src={logo} />
+            <img className={classes.logoImg} src={logo} alt="logo" />
           </IconButton>
         </NavLink>
 

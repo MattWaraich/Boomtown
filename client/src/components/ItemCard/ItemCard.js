@@ -31,8 +31,8 @@ const ItemCard = ({ classes, item, props }) => {
               <CardContent>
                 <div className={classes.gravatarDisplay}>
                   <Gravatar
+                    email={item.itemowner ? item.itemowner.email : viewer.email}
                     className={classes.gravPic}
-                    email="MarkZ@gmail.com"
                   />
                   <div className={classes.gravatarName}>
                     <p>

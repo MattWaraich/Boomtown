@@ -27,9 +27,7 @@ const Home = ({ classes }) => {
         </Typography>
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
-        <Typography gutterBottom variant="h3">
-          <bold className={classes.homeScreenTitle}>Welcome home.</bold>
-        </Typography>
+        <p className={classes.homeScreenTitle}>Welcome home.</p>
         <AccountForm />
       </Grid>
     </Grid>

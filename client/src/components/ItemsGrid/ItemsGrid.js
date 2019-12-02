@@ -6,7 +6,7 @@ import styles from "./styles";
 
 const ItemsGrid = ({ items, classes }) => (
   <Grid className={classes.gridContainerStyle} container spacing={3}>
-    {items.length ? (
+    {items && items.length ? (
       items.map(item => {
         return (
           <Grid key={item.id} item xs={12} sm={6} md={4}>

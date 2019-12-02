@@ -11,10 +11,15 @@ const ItemFields = gql`
     itemowner {
       id
       fullname
+      email
+      bio
     }
     created
     borrower {
+      id
       fullname
+      email
+      bio
     }
     tags {
       id

@@ -31,15 +31,21 @@ class AccountForm extends Component {
 
   render() {
     const { classes, LOGIN_MUTATION, SIGNUP_MUTATION } = this.props;
-    const BoolFormToggle = this.state.formToggle;
 
     return (
       <Form
         onSubmit={async values => {
+          const patt = /\b[\w-]+@[\w-]+\w{2,4}\b/g;
+
+          if (!patt.test(values.email)) {
+            this.setState({ error: { email: "Invalid type of the email" } });
+            return;
+          }
+
           if (this.state.error) {
           } else {
             try {
-              BoolFormToggle
+              this.state.formToggle
                 ? await LOGIN_MUTATION({ variables: { user: values } })
                 : await SIGNUP_MUTATION({ variables: { user: values } });
             } catch (e) {
@@ -48,7 +54,7 @@ class AccountForm extends Component {
           }
         }}
         validate={values => {
-          return validate(values, BoolFormToggle);
+          return validate(values, this.state.formToggle);
         }}
         render={({ handleSubmit, form, valid, submitSucceeded }) => {
           return (
@@ -59,7 +65,7 @@ class AccountForm extends Component {
               noValidate
               className={classes.accountForm}
             >
-              {!BoolFormToggle && (
+              {!this.state.formToggle && (
                 <FormControl fullWidth>
                   <InputLabel htmlFor="fullname">Username</InputLabel>
                   <Field
@@ -70,6 +76,7 @@ class AccountForm extends Component {
                         {...input}
                         type="text"
                         value={input.value}
+                        className={classes.signInField}
                       />
                     )}
                   />
@@ -109,8 +116,8 @@ class AccountForm extends Component {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
                   alignItems="center"
+                  justify="space-between"
                   className={classes.enterBtn}
                 >
                   <Button
@@ -120,7 +127,7 @@ class AccountForm extends Component {
                     color="secondary"
                     disabled={!valid}
                   >
-                    {BoolFormToggle ? "Enter" : "Create Account"}
+                    {this.state.formToggle ? "Enter" : "Create Account"}
                   </Button>
                   <Typography className={classes.createAccBtnContainer}>
                     <button
@@ -128,11 +135,11 @@ class AccountForm extends Component {
                       type="button"
                       onClick={() => {
                         this.setState({
-                          formToggle: !BoolFormToggle
+                          formToggle: !this.state.formToggle
                         });
                       }}
                     >
-                      {BoolFormToggle
+                      {this.state.formToggle
                         ? "Create an account."
                         : "Login to existing account."}
                     </button>
@@ -161,7 +168,11 @@ AccountForm.propTypes = {
   SIGNUP_MUTATION: PropTypes.func.isRequired
 };
 
-const refetchQueries = [{ query: VIEWER_QUERY }];
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
 
 export default compose(
   graphql(SIGNUP_MUTATION, {

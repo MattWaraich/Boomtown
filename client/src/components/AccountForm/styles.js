@@ -1,5 +1,3 @@
-import color from "@material-ui/core/colors";
-
 const styles = theme => ({
   signInField: {
     width: "65%"

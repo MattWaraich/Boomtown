@@ -4,7 +4,6 @@ import styles from "./styles";
 import ShareItemForm from "../../components/ShareItemForm";
 import ShareItemPreview from "../../components/ShareItemPreview";
 import Grid from "@material-ui/core/Grid";
-import { Container } from "@material-ui/core";
 
 const Share = ({ classes, tags }) => {
   return (

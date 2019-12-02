@@ -19,7 +19,7 @@ const styles = theme => ({
   extendedIcon: {
     marginRight: "15px"
   },
-  logo: {
+  logoImg: {
     height: "48px"
   }
 });
