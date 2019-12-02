@@ -4,6 +4,7 @@ import styles from "./styles";
 import ShareItemForm from "../../components/ShareItemForm";
 import ShareItemPreview from "../../components/ShareItemPreview";
 import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
 const Share = ({ classes, tags }) => {
   return (
@@ -21,3 +22,7 @@ const Share = ({ classes, tags }) => {
 };
 
 export default withStyles(styles)(Share);
+
+Share.propTypes = {
+  tags: PropTypes.array.isRequired
+};

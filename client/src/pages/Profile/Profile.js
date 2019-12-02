@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import Gravatar from "react-gravatar";
 import ItemsGrid from "../../components/ItemsGrid/ItemsGrid";
+import PropTypes from "prop-types";
 
 const Profile = ({ info, classes }) => {
   return (
@@ -13,7 +14,6 @@ const Profile = ({ info, classes }) => {
             <div className={classes.userGravatar}>
               <Gravatar email={info.email} />
             </div>
-
             <div className={classes.userFullname}>{info.fullname}</div>
           </div>
 
@@ -37,3 +37,10 @@ const Profile = ({ info, classes }) => {
 };
 
 export default withStyles(styles)(Profile);
+
+Profile.propTypes = {
+  item: PropTypes.shape({
+    items: PropTypes.array,
+    email: PropTypes.string
+  })
+};

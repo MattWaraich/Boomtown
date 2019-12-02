@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import ItemsGrid from "../../components/ItemsGrid";
+import PropTypes from "prop-types";
 
 const Items = ({ items, classes }) => {
   return (
@@ -12,3 +13,7 @@ const Items = ({ items, classes }) => {
 };
 
 export default withStyles(styles)(Items);
+
+Items.propTypes = {
+  items: PropTypes.array
+};
