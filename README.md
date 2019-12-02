@@ -24,6 +24,12 @@
 - Run 'yarn install'
 ```
 
+## To Build
+
+```
+- yarn run build
+```
+
 ## To Run the Server (run from server directory)
 
 ```
@@ -33,7 +39,7 @@
 ## To Run the Client (run from client directory)
 
 ```
-- yarn run build
+- yarn start
 ```
 
 ## Personal Learnings

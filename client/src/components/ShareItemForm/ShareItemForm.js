@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Field, Form } from "react-final-form";
+import { Field, Form, FormSpy } from "react-final-form";
 import Input from "@material-ui/core/Input";
 import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
-import { FormSpy } from "react-final-form";
 import { Button, withStyles } from "@material-ui/core";
 import styles from "./styles";
 import { Mutation } from "react-apollo";
 import { ADD_ITEM_MUTATION } from "../../apollo/queries";
+import PropTypes from "prop-types";
 
 class ShareForm extends Component {
   constructor(props) {
@@ -15,7 +15,6 @@ class ShareForm extends Component {
   }
 
   saveItem = async (addItem, allTags, values) => {
-    console.log(values);
     try {
       const newItem = {
         ...values,
@@ -26,10 +25,6 @@ class ShareForm extends Component {
       throw e;
     }
   };
-
-  // validate = values => {
-  //   console.log(values);
-  // };
 
   applyTags = (tags, allTags) => {
     return tags.map(tag => {
@@ -43,7 +38,7 @@ class ShareForm extends Component {
     });
   };
 
-  dispatchUpdate = (values, allTags, updatePreview) => {
+  dispatchUpdate = (values, allTags, updatePreview, resetPreview) => {
     updatePreview({
       ...values,
       tags: this.applyTags(values.tags || [], allTags)
@@ -57,11 +52,9 @@ class ShareForm extends Component {
       <ItemPreviewContext.Consumer>
         {({ updatePreview, resetPreview }) => {
           return (
-            <div className="sharePageInputFields">
-              <div className="sharePageTitle">
-                <h1>
-                  <strong>SHARE. BORROW. PROSPER.</strong>
-                </h1>
+            <div>
+              <div className={classes.sharePageTitle}>
+                <h1>SHARE. BORROW. PROSPER.</h1>
               </div>
 
               <Mutation mutation={ADD_ITEM_MUTATION}>
@@ -72,8 +65,14 @@ class ShareForm extends Component {
                         this.saveItem(addItem, tags, values);
                       }}
                       validate={this.validate}
-                      render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
+                      render={({ handleSubmit, form }) => (
+                        <form
+                          onSubmit={event => {
+                            handleSubmit(event);
+                            form.reset();
+                            resetPreview();
+                          }}
+                        >
                           <FormSpy
                             subscription={{ values: true }}
                             onChange={({ values }) => {
@@ -169,3 +168,7 @@ class ShareForm extends Component {
 }
 
 export default withStyles(styles)(ShareForm);
+
+ShareForm.propTypes = {
+  tags: PropTypes.array.isRequired
+};

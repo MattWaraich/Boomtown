@@ -4,7 +4,6 @@ import styles from "./styles";
 import ItemsGrid from "../../components/ItemsGrid";
 
 const Items = ({ items, classes }) => {
-  console.log(items);
   return (
     <div className={classes.itemsPage}>
       <ItemsGrid items={items} />

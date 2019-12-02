@@ -1,7 +1,7 @@
 const styles = theme => {
   return {
     gridContainerStyle: {
-      padding: "80px"
+      // padding: "80px"
     }
   };
 };

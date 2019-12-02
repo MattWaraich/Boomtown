@@ -54,7 +54,7 @@ const MenuBar = ({ classes, SIGNOUT }) => {
               color="primary"
             >
               <AddCircleIcon className={classes.extendedIcon} />
-              Share Something
+              <div>Share Something</div>
             </Fab>
           </NavLink>
           <IconButton onClick={handleClick}>
@@ -74,7 +74,6 @@ const MenuBar = ({ classes, SIGNOUT }) => {
               }
             }}
           >
-            {/* <Link component="button" variant="body2"> */}
             <MenuItem onClick={handleClose}>
               <NavLink to="/profile">
                 <ListItemIcon>
@@ -88,25 +87,22 @@ const MenuBar = ({ classes, SIGNOUT }) => {
 
             <MenuItem
               onClick={() => {
-                console.log(1);
                 handleClose();
                 try {
                   SIGNOUT();
-                } catch (e) {
-                  console.log(e);
-                }
+                } catch (e) {}
               }}
             >
               <ListItemIcon>
                 <PowerSettingsNewIcon fontSize="small" />
-                <Typography
-                  className={classes.signOutButton}
-                  variant="inherit"
-                  noWrap
-                >
-                  Sign Out
-                </Typography>
               </ListItemIcon>
+              <Typography
+                className={classes.signOutButton}
+                variant="inherit"
+                noWrap
+              >
+                Sign Out
+              </Typography>
             </MenuItem>
           </Menu>
         </div>

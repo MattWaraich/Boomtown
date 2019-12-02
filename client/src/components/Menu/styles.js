@@ -21,9 +21,6 @@ const styles = theme => ({
   },
   logo: {
     height: "48px"
-  },
-  signOutButton: {
-    paddingLeft: "35px"
   }
 });
 

@@ -3,6 +3,7 @@ import Profile from "./Profile";
 import { Query } from "react-apollo";
 import { ALL_USER_ITEMS_QUERY } from "../../apollo/queries";
 import { ViewerContext } from "../../context/ViewerProvider";
+import LoadingScreen from "../../components/LoadingScreen";
 
 class ProfileContainer extends Component {
   render() {
@@ -16,7 +17,7 @@ class ProfileContainer extends Component {
               variables={{ id: viewer.id }}
             >
               {({ loading, error, data }) => {
-                if (loading) return <p>loading</p>;
+                if (loading) return <LoadingScreen />;
                 if (error) return `Error: ${error}`;
                 if (data) return <Profile info={data.user} />;
               }}

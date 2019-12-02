@@ -164,7 +164,6 @@ module.exports = postgres => {
                   throw "Cannot commit";
                 }
                 done();
-                console.log("---------------------------");
                 console.log("DONE");
                 resolve(newItem.rows[0]);
               });

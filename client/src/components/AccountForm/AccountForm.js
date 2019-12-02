@@ -85,6 +85,7 @@ class AccountForm extends Component {
                       {...input}
                       type="text"
                       value={input.value}
+                      className={classes.signInField}
                     />
                   )}
                 />
@@ -99,6 +100,7 @@ class AccountForm extends Component {
                       label="Password"
                       type="password"
                       value={input.value}
+                      className={classes.signInField}
                     />
                   )}
                 />
@@ -109,6 +111,7 @@ class AccountForm extends Component {
                   direction="row"
                   justify="space-between"
                   alignItems="center"
+                  className={classes.enterBtn}
                 >
                   <Button
                     type="submit"
@@ -119,8 +122,9 @@ class AccountForm extends Component {
                   >
                     {BoolFormToggle ? "Enter" : "Create Account"}
                   </Button>
-                  <Typography>
+                  <Typography className={classes.createAccBtnContainer}>
                     <button
+                      className={classes.createAccBtn}
                       type="button"
                       onClick={() => {
                         this.setState({

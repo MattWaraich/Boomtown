@@ -1,8 +1,7 @@
 const styles = theme => ({
   profileContainer: {
     padding: 89,
-    // width: 1450,
-    height: "100%",
+    minHeight: "100vh",
     width: "100%",
     backgroundColor: "#212121"
   },
@@ -19,12 +18,16 @@ const styles = theme => ({
     alignItems: "center"
   },
   userGravatar: {
-    paddingRight: "10px",
-    borderRadius: "50%"
+    paddingRight: "20px",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden"
   },
   userFullname: {
     fontSize: 45,
-    color: "#616161"
+    color: "#616161",
+    paddingLeft: "15px"
   },
   userData: {
     fontSize: 25
