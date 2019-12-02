@@ -3,7 +3,7 @@ const styles = theme => ({
     width: "65%"
   },
   createAccBtnContainer: {
-    paddingLeft: "150px"
+    paddingLeft: "50px"
   },
   enterBtn: {
     paddingTop: "20px"
