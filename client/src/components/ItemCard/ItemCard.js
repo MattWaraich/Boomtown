@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import * as moment from "moment";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -21,54 +22,119 @@ const ItemCard = ({ classes, item, props }) => {
       {({ viewer }) => {
         return (
           <Fragment>
-            <Card>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.cardItemImages}
-                  image={item.imageurl}
-                />
-              </CardActionArea>
-              <CardContent>
-                <div className={classes.gravatarDisplay}>
-                  <Gravatar
-                    email={item.itemowner ? item.itemowner.email : viewer.email}
-                    className={classes.gravPic}
+            {item.itemowner ? (
+              <Link to={`/profile/${item.itemowner.id}`}>
+                <Card>
+                  <CardActionArea>
+                    <CardMedia
+                      className={classes.cardItemImages}
+                      image={item.imageurl}
+                    />
+                  </CardActionArea>
+                  <CardContent>
+                    <div className={classes.gravatarDisplay}>
+                      <Gravatar
+                        email={
+                          item.itemowner ? item.itemowner.email : viewer.email
+                        }
+                        className={classes.gravPic}
+                      />
+                      <div className={classes.gravatarName}>
+                        <p>
+                          {item.itemowner
+                            ? item.itemowner.fullname
+                            : viewer.fullname}
+                        </p>
+                        <p className={classes.momentColor}>
+                          {moment(item.created).fromNow()}
+                        </p>
+                      </div>
+                    </div>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {item.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {item.tags
+                        ? item.tags
+                            .map(tag => {
+                              return tag.title;
+                            })
+                            .join(", ")
+                        : "no tags found"}
+                    </Typography>
+                    <Typography>{item.description}</Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      className={classes.itemBorrowButton}
+                      type="submit"
+                      variant="contained"
+                    >
+                      BORROW
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Link>
+            ) : (
+              <Card>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.cardItemImages}
+                    image={item.imageurl}
                   />
-                  <div className={classes.gravatarName}>
-                    <p>
-                      {item.itemowner
-                        ? item.itemowner.fullname
-                        : viewer.fullname}
-                    </p>
-                    <p className={classes.momentColor}>
-                      {moment(item.created).fromNow()}
-                    </p>
+                </CardActionArea>
+                <CardContent>
+                  <div className={classes.gravatarDisplay}>
+                    <Gravatar
+                      email={
+                        item.itemowner ? item.itemowner.email : viewer.email
+                      }
+                      className={classes.gravPic}
+                    />
+                    <div className={classes.gravatarName}>
+                      <p>
+                        {item.itemowner
+                          ? item.itemowner.fullname
+                          : viewer.fullname}
+                      </p>
+                      <p className={classes.momentColor}>
+                        {moment(item.created).fromNow()}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {item.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {item.tags
-                    ? item.tags
-                        .map(tag => {
-                          return tag.title;
-                        })
-                        .join(", ")
-                    : "no tags found"}
-                </Typography>
-                <Typography>{item.description}</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  className={classes.itemBorrowButton}
-                  type="submit"
-                  variant="contained"
-                >
-                  BORROW
-                </Button>
-              </CardActions>
-            </Card>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {item.tags
+                      ? item.tags
+                          .map(tag => {
+                            return tag.title;
+                          })
+                          .join(", ")
+                      : "no tags found"}
+                  </Typography>
+                  <Typography>{item.description}</Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    className={classes.itemBorrowButton}
+                    type="submit"
+                    variant="contained"
+                  >
+                    BORROW
+                  </Button>
+                </CardActions>
+              </Card>
+            )}
           </Fragment>
         );
       }}

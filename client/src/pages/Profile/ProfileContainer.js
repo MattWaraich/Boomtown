@@ -4,9 +4,12 @@ import { Query } from "react-apollo";
 import { ALL_USER_ITEMS_QUERY } from "../../apollo/queries";
 import { ViewerContext } from "../../context/ViewerProvider";
 import LoadingScreen from "../../components/LoadingScreen";
+import { withRouter } from "react-router";
 
 class ProfileContainer extends Component {
   render() {
+    const { match } = this.props;
+    console.log(match);
     return (
       <ViewerContext.Consumer>
         {({ viewer }) => {
@@ -14,7 +17,12 @@ class ProfileContainer extends Component {
             <Query
               query={ALL_USER_ITEMS_QUERY}
               fetchPolicy="cache-and-network"
-              variables={{ id: viewer.id }}
+              variables={{
+                id:
+                  match.path === "/profile/:userid"
+                    ? match.params.userid
+                    : viewer.id
+              }}
             >
               {({ loading, error, data }) => {
                 if (loading) return <LoadingScreen />;
@@ -29,4 +37,4 @@ class ProfileContainer extends Component {
   }
 }
 
-export default ProfileContainer;
+export default withRouter(ProfileContainer);
